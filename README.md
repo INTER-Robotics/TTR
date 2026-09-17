@@ -44,7 +44,7 @@ roslaunch ttr MAV_exploration_indoor_at.launch
 
 Now in the TTR ui, on RViz, press first the button "Take-off" and when the UAV has taken off press "Start" to begin the exploration, in the following image you can see the user interface:
 
-<img width="343" height="188" alt="TTR_ui" src="https://github.com/user-attachments/assets/6bb8eaf1-c5ad-4e5d-a2ee-d366984ad8b6" />
+<img width="343" height="188" alt="TTR_ui" src="./images/TTR_ui.png" />
 
 # Citation
 ```
