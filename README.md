@@ -31,7 +31,7 @@ Assuming you are in the workspace directory:
 cd src
 git clone https://github.com/Taucrates/ttr
 cd ..
-wstool init . ./src/ttr/ttr_installer.rosinstall
+wstool init . ./src/TTR/ttr_installer.rosinstall
 wstool update
 catkin build
 ```
