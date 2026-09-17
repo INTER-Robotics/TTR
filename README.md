@@ -2,7 +2,7 @@
 TTR (Tandem Tree exploreR) is a novel frontier-based exploration algorithm designed for efficient navigation in indoor and confined spaces. TTR employs a tandem tree expansion strategy: a local tree and a persistent tree, both generated using the Rapidly-exploring Random Tree algorithm (RRT). The local tree is periodically regenerated, while the persistent tree expands continuously along the mission, incorporating branches from the local tree. These structures identify key exploration points, i.e. frontiers, which are then validated, clustered, and finally screened to decide on the next goal to achieve.
 
 # Installation
-This code has been tested on Ubuntu 64-bit 20.04.6 LTS with ROS Noetic (desktop-full).
+This code has been tested on Ubuntu 64-bit 20.04.6 LTS with ROS Noetic (desktop-full). For newer versions of Ubuntu use [TTR-docker](https://github.com/INTER-Robotics/TTR-docker).
 
 ### Install Dependencies
 ```bash
