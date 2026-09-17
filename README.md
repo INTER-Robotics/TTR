@@ -29,7 +29,7 @@ catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release
 Assuming you are in the workspace directory:
 ```bash
 cd src
-git clone https://github.com/Taucrates/ttr
+git clone https://github.com/INTER-Robotics/TTR.git
 cd ..
 wstool init . ./src/TTR/ttr_installer.rosinstall
 wstool update
