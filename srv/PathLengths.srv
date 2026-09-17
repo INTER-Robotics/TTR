@@ -1,0 +1,5 @@
+bool raw_length
+geometry_msgs/Point start
+geometry_msgs/Point[] frontiers
+---
+float64[] lengths

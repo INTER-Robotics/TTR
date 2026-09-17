@@ -1,0 +1,239 @@
+<launch>
+  <param name="use_sim_time" value="true"/>
+
+  <!-- Exploration modules -->
+  <arg name="fixed_frame" value="map"/>
+  <arg name="base_frame" value="base_link"/>
+
+  <arg name="local_length" default="1.0"/>
+  <arg name="permanent_length" default="2.0"/>
+  <arg name="height_limit" default="200.0"/>
+  <arg name="ms_bw" default="8.5"/>
+  <arg name="side_margin" default="0.5"/>
+  <arg name="gain_radius" default="1.0"/>
+  <arg name="check_path_new_connections" default="false"/>
+  <arg name="original_add_branch" default="true"/>
+  <arg name="projection_height" default="0.6"/>
+  <arg name="ground_robot" default="False"/>
+
+  <arg name="max_vel" default="1.0"/>
+  <arg name="max_mission_time" default="5000.0"/>
+
+  <arg name="min_information_gain" default="0.25"/>
+
+  <!-- Simulation -->
+	<arg name="gazebo_world" default="cave_world_closed" />
+	<arg name="x" default="-8.0"/>
+	<arg name="y" default="-22.0"/>
+	<arg name="z" default="0.3"/>
+	<arg name="max_speed" default="1.0"/>
+
+  <!-- Pure 3D -->
+  <arg name="max_x" default="500.0"/>
+  <arg name="min_x" default="-500.0"/>
+  <arg name="max_y" default="500.0"/>
+  <arg name="min_y" default="-500.0"/>
+  <arg name="max_z" default="500.0"/>
+  <arg name="min_z" default="-500.0"/>
+
+  <!-- Voxblox Node -->
+  <arg name="resolution" default="0.2"/>
+  <arg name="voxels_per_side" default="16"/>
+  <arg name="max_ray" default="25.0"/>
+  <arg name="clear_sphere" default="True"/>
+  <arg name="clear_sphere_r" default="0.5"/>
+  <arg name="occ_sphere_r" default="1.2"/>
+
+  <!-- Simulation -->
+  <include file="$(find m100_simulation)/launch/simulation.launch">
+    <arg name="gazebo_world" value="$(arg gazebo_world)"/>
+		<arg name="x" default="$(arg x)"/>
+		<arg name="y" default="$(arg y)"/>
+		<arg name="z" default="$(arg z)"/>
+    <arg name="max_speed" value="$(arg max_speed)"/>
+  </include>
+
+  <!-- Voxblox mapping -->
+	<include file="$(find voxblox_ros)/launch/drone.launch">
+		<arg name="resolution" value="$(arg resolution)"/>
+		<arg name="voxels_per_side" value="$(arg voxels_per_side)"/>
+		<arg name="max_ray" value="$(arg max_ray)"/>
+		<arg name="clear_sphere" value="$(arg clear_sphere)"/>
+		<arg name="clear_sphere_r" value="$(arg clear_sphere_r)"/>
+		<arg name="occ_sphere_r" value="$(arg occ_sphere_r)"/>
+	</include>
+
+  <!-- Exploration modules -->
+  <node pkg="ttr" type="persistent_tree_node" name="persistent_tree" output="screen">
+    <param name="fixed_frame" value="$(arg fixed_frame)"/>
+    <param name="base_frame" value="$(arg base_frame)"/>
+
+    <param name="frequency" value="1000"/>
+    <param name="max_branch_length" value="$(arg permanent_length)"/>
+    <param name="map_resolution" value="$(arg resolution)"/>
+    <param name="margin" value="$(arg side_margin)"/>
+    <param name="gain_radius" value="$(arg gain_radius)"/>
+    <param name="min_information_gain" value="$(arg min_information_gain)"/>
+    <param name="check_path_new_connections" value="$(arg check_path_new_connections)"/>
+    <param name="original_add_branch" value="$(arg original_add_branch)"/>
+    <param name="ground_robot" value="$(arg ground_robot)"/>
+    <param name="projection_height" value="$(arg projection_height)"/>
+
+    <param name="max_x" value="$(arg max_x)"/>
+    <param name="min_x" value="$(arg min_x)"/>
+    <param name="max_y" value="$(arg max_y)"/>
+    <param name="min_y" value="$(arg min_y)"/>
+    <param name="max_z" value="$(arg max_z)"/>
+    <param name="min_z" value="$(arg min_z)"/>
+
+    <!-- Voxblox ESDF server -->
+    <param name="world_frame" value="map" />
+    <param name="tsdf_voxel_size" value="$(arg resolution)" />
+    <param name="tsdf_voxels_per_side" value="$(arg voxels_per_side)" />
+    <param name="traversability_radius" value="0.0" /> 
+
+    <param name="color_mode" value="normals"/>
+    <param name="use_tf_transforms" value="true" />
+    <param name="enable_icp" value="false" />
+    <param name="icp_iterations" value="10" />
+    <param name="verbose" value="false" />
+    <param name="method" value="fast" />
+    <param name="publish_pointclouds" value="false" />
+    <param name="publish_traversable" value="false" />
+    <param name="mesh_as_pointcloud" value="false" />
+    <param name="publish_tsdf_map" value="false" />
+    <param name="publish_esdf_map" value="false" />
+
+    <param name="clear_sphere_for_planning" value="$(arg clear_sphere)"/>
+    <param name="clear_sphere_radius" value="$(arg clear_sphere_r)"/>
+    <param name="occupied_sphere_radius" value="$(arg occ_sphere_r)"/>
+    
+    <remap from="~esdf_map_in" to="/voxblox_node/esdf_map_out" />
+    <remap from="~tsdf_map_in" to="/voxblox_node/tsdf_map_out" />
+  </node>
+
+  <node pkg="ttr" type="local_tree_node" name="local_tree" output="screen" respawn="true">
+    <param name="fixed_frame" value="$(arg fixed_frame)"/>
+    <param name="base_frame" value="$(arg base_frame)"/>
+    <param name="frequency" value="1000"/>
+    <param name="max_branch_length" value="$(arg local_length)"/>
+    <param name="map_resolution" value="$(arg resolution)"/> 
+    <param name="margin" value="$(arg side_margin)"/>
+    <param name="gain_radius" value="$(arg gain_radius)"/>
+    <param name="min_information_gain" value="$(arg min_information_gain)"/>
+    <param name="ground_robot" value="$(arg ground_robot)"/>
+    <param name="projection_height" value="$(arg projection_height)"/>
+
+    <param name="max_x" value="$(arg max_x)"/>
+    <param name="min_x" value="$(arg min_x)"/>
+    <param name="max_y" value="$(arg max_y)"/>
+    <param name="min_y" value="$(arg min_y)"/>
+    <param name="max_z" value="$(arg max_z)"/>
+    <param name="min_z" value="$(arg min_z)"/>
+
+    <!-- Voxblox ESDF server -->
+    <param name="world_frame" value="map" />
+    <param name="tsdf_voxel_size" value="$(arg resolution)" />
+    <param name="tsdf_voxels_per_side" value="$(arg voxels_per_side)" />
+    <param name="traversability_radius" value="0.0" /> 
+
+    <param name="color_mode" value="normals"/>
+    <param name="use_tf_transforms" value="true" />
+    <param name="enable_icp" value="false" />
+    <param name="icp_iterations" value="10" />
+    <param name="verbose" value="false" />
+    <param name="method" value="fast" />
+    <param name="publish_pointclouds" value="false" />
+    <param name="publish_traversable" value="false" />
+    <param name="mesh_as_pointcloud" value="false" />
+    <param name="publish_tsdf_map" value="false" />
+    <param name="publish_esdf_map" value="false" />
+    <!-- <param name="max_block_distance_from_body" value="20.0" /> -->
+
+    <param name="clear_sphere_for_planning" value="$(arg clear_sphere)"/>
+    <param name="clear_sphere_radius" value="$(arg clear_sphere_r)"/>
+    <param name="occupied_sphere_radius" value="$(arg occ_sphere_r)"/>
+    
+    <remap from="~esdf_map_in" to="/voxblox_node/esdf_map_out" />
+    <remap from="~tsdf_map_in" to="/voxblox_node/tsdf_map_out" />
+  </node>
+
+  <node pkg="ttr" type="validator_node" name="validator" output="screen" respawn="true">
+    <param name="fixed_frame" value="$(arg fixed_frame)"/>
+    <param name="map_resolution" value="$(arg resolution)"/>
+    <param name="margin" value="$(arg side_margin)"/>
+    <param name="height_limit" value="$(arg height_limit)"/>
+    <param name="bandwidth" value="$(arg ms_bw)"/>
+    <param name="gain_radius" value="$(arg gain_radius)"/>
+    <param name="min_information_gain" value="$(arg min_information_gain)"/>
+
+    <!-- Voxblox ESDF server -->
+    <param name="world_frame" value="map" />
+    <param name="tsdf_voxel_size" value="$(arg resolution)" />
+    <param name="tsdf_voxels_per_side" value="$(arg voxels_per_side)" />
+    <param name="traversability_radius" value="0.0" /> 
+
+    <param name="color_mode" value="normals"/>
+    <param name="use_tf_transforms" value="true" />
+    <param name="enable_icp" value="false" />
+    <param name="icp_iterations" value="10" />
+    <param name="verbose" value="false" />
+    <param name="method" value="fast" />
+    <param name="publish_pointclouds" value="false" />
+    <param name="publish_traversable" value="false" />
+    <param name="mesh_as_pointcloud" value="false" />
+    <param name="publish_tsdf_map" value="false" />
+    <param name="publish_esdf_map" value="false" />
+
+    <param name="clear_sphere_for_planning" value="$(arg clear_sphere)"/>
+    <param name="clear_sphere_radius" value="$(arg clear_sphere_r)"/>
+    <param name="occupied_sphere_radius" value="$(arg occ_sphere_r)"/>
+    
+    <remap from="~esdf_map_in" to="/voxblox_node/esdf_map_out" />
+    <remap from="~tsdf_map_in" to="/voxblox_node/tsdf_map_out" />
+  </node>
+
+  <node pkg="ttr" type="decision_maker_node" name="decision_maker" output="screen">
+    <param name="fixed_frame" value="$(arg fixed_frame)"/>
+    <param name="base_frame" value="$(arg base_frame)"/>
+    <param name="frequency" value="2"/> <!-- 10 -->
+    <param name="map_resolution" value="$(arg resolution)"/>
+    <param name="max_vel" value="$(arg max_vel)"/>
+    <param name="max_mission_time" value="$(arg max_mission_time)"/>
+  </node>
+
+  <node pkg="ttr" type="planner_node" name="planner" output="screen" respawn="true">
+    <param name="fixed_frame" value="$(arg fixed_frame)"/>
+    <param name="base_frame" value="$(arg base_frame)"/>
+
+    <param name="map_resolution" value="$(arg resolution)"/>
+    <param name="margin" value="$(arg side_margin)"/>
+
+    <!-- Voxblox ESDF server -->
+    <param name="world_frame" value="map" />
+    <param name="tsdf_voxel_size" value="$(arg resolution)" />
+    <param name="tsdf_voxels_per_side" value="$(arg voxels_per_side)" />
+    <param name="traversability_radius" value="0.0" /> 
+
+    <param name="color_mode" value="normals"/>
+    <param name="use_tf_transforms" value="true" />
+    <param name="enable_icp" value="false" />
+    <param name="icp_iterations" value="10" />
+    <param name="verbose" value="false" />
+    <param name="method" value="fast" />
+    <param name="publish_pointclouds" value="false" />
+    <param name="publish_traversable" value="false" />
+    <param name="mesh_as_pointcloud" value="false" />
+    <param name="publish_tsdf_map" value="false" />
+    <param name="publish_esdf_map" value="false" />
+
+    <param name="clear_sphere_for_planning" value="$(arg clear_sphere)"/>
+    <param name="clear_sphere_radius" value="$(arg clear_sphere_r)"/>
+    <param name="occupied_sphere_radius" value="$(arg occ_sphere_r)"/>
+    
+    <remap from="~esdf_map_in" to="/voxblox_node/esdf_map_out" />
+    <remap from="~tsdf_map_in" to="/voxblox_node/tsdf_map_out" />
+  </node>
+
+
+</launch>

@@ -1,0 +1,77 @@
+## Sensors
+- git:
+    uri: https://github.com/Taucrates/ouster-gazebo-simulation.git
+    local-name: src/sensors/ouster-gazebo-simulation
+    
+## Robots
+- git:
+    uri: https://github.com/dji-m100-ros/dji_m100_description.git
+    local-name: src/robots/dji_m100_description
+- git:
+    uri: https://github.com/Taucrates/m100_simulation.git
+    local-name: src/robots/m100_simulation
+    version: first_release
+- git:
+    uri: https://github.com/Taucrates/hector-quadrotor-noetic.git
+    local-name: src/robots/hector_quadrotor_noetic
+- git:
+    uri: https://github.com/srv/srv_mav_state_estimation.git
+    local-name: src/robots/srv_mav_state_estimation
+- git:
+    uri: https://github.com/srv/srv_mav_msgs.git
+    local-name: src/robots/srv_mav_msgs
+    version: ardumavs
+- git:
+    uri: https://github.com/srv/srv_mav_control.git
+    local-name: src/robots/srv_mav_control
+    version: ardumavs
+- git:
+    uri: https://github.com/srv/srv_mav_behaviours.git
+    local-name: src/robots/srv_mav_behaviours
+    version: ardumavs
+
+## Tools
+- git:
+    uri: https://github.com/INTER-Robotics/pointcloud_tools.git
+    local-name: src/tools/pointcloud_tools
+- git:
+    uri: https://github.com/Taucrates/ttr_ui.git
+    local-name: src/tools/ttr_ui
+
+# Voxblox
+- git:
+    uri: https://github.com/INTER-Robotics/voxblox.git
+    local-name: src/tools/voxblox    
+- git:
+    uri: https://github.com/catkin/catkin_simple.git
+    local-name: src/tools/catkin_simple
+- git:
+    uri: https://github.com/ethz-asl/eigen_catkin.git
+    local-name: src/tools/eigen_catkin
+- git:
+    uri: https://github.com/ethz-asl/eigen_checks.git
+    local-name: src/tools/eigen_checks
+- git:
+    uri: https://github.com/ethz-asl/gflags_catkin.git
+    local-name: src/tools/gflags_catkin
+- git:
+    uri: https://github.com/ethz-asl/glog_catkin.git
+    local-name: src/tools/glog_catkin
+- git:
+    uri: https://github.com/ethz-asl/minkindr.git
+    local-name: src/tools/minkindr
+- git:
+    uri: https://github.com/ethz-asl/minkindr_ros.git
+    local-name: src/tools/minkindr_ros
+- git:
+    uri: https://github.com/ethz-asl/protobuf_catkin.git
+    local-name: src/tools/protobuf_catkin
+- git:
+    uri: https://github.com/ethz-asl/numpy_eigen.git
+    local-name: src/tools/numpy_eigen
+- git:
+    uri: https://github.com/ethz-asl/catkin_boost_python_buildtool.git
+    local-name: src/tools/catkin_boost_python_buildtool
+- git:
+    uri: https://github.com/CogRob/catkin_grpc.git
+    local-name: src/tools/catkin_grpc
