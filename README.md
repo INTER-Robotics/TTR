@@ -3,6 +3,14 @@ TTR (Tandem Tree exploreR) is a novel frontier-based exploration algorithm desig
 
 # Installation
 This code has been tested on Ubuntu 64-bit 20.04.6 LTS with ROS Noetic (desktop-full). For newer versions of Ubuntu use [TTR-docker](https://github.com/INTER-Robotics/TTR-docker).
+html
+<p align="center">
+  <img src="images/cave_comparison.gif" width="480" height="270">
+  <img src="images/mine_comparison.gif" width="480" height="270">
+</p>
+<p align="center">
+  <img src="images/indoor_AT_comparison.gif" width="480" height="270">
+</p>
 
 ### Install Dependencies
 ```bash
