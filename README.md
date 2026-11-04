@@ -1,11 +1,19 @@
 # Tandem Tree ExploreR
 TTR (Tandem Tree exploreR) is a novel frontier-based exploration algorithm designed for efficient navigation in indoor and confined spaces. TTR employs a tandem tree expansion strategy: a local tree and a persistent tree, both generated using the Rapidly-exploring Random Tree algorithm (RRT). The local tree is periodically regenerated, while the persistent tree expands continuously along the mission, incorporating branches from the local tree. These structures identify key exploration points, i.e. frontiers, which are then validated, clustered, and finally screened to decide on the next goal to achieve.
+
+#### Comparison with state-of-the-art solutions
 <p align="center">
   <img src="images/cave_comparison.gif" width="400">
   <img src="images/mine_comparison.gif" width="400">
 </p>
 <p align="center">
   <img src="images/indoor_AT_comparison.gif" width="400">
+</p>
+
+#### Real environment exploration
+<p align="center">
+  <img src="images/corridor.gif" width="400">
+  <img src="images/storage.gif" width="400">
 </p>
 
 # Installation
